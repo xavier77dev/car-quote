@@ -19,10 +19,10 @@ export default function CarLanding() {
   const [formData, setFormData] = useState({
     model: "",
     name: "",
-    email: "pedro.vega.damian@gmail.com",
+    email: "xavier.basurto.77@gmail.com",
     phone: "",
     department: "",
-    city: "",
+    cityId: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -183,7 +183,7 @@ export default function CarLanding() {
                   </Label>
                   <Select
                     onValueChange={(value) =>
-                      setFormData({ ...formData, city: value })
+                      setFormData({ ...formData, cityId: value })
                     }
                   >
                     <SelectTrigger className="border-gray-300">

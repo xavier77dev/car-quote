@@ -15,14 +15,17 @@ datasource db {
 
 model Quotation {
   id            Int      @id @default(autoincrement())
-  modelCar      Model    @default(SUV_PREMIUM)
+  model      Auto @relation(fields: [modelId], references: [id])
+  modelId Int
   fullName      String
   phone         String   @unique
   email         String   @unique
   acceptsPolicy Boolean
   createdAt     DateTime @default(now())
-  City          City?    @relation(fields: [cityId], references: [id])
-  cityId        Int?
+  City   City @relation(fields: [cityId], references: [id])
+  cityId        Int
+
+  @@unique([email, modelId])
 }
 
 model Department {
@@ -39,8 +42,9 @@ model City {
   quotations   Quotation[]
 }
 
-enum Model {
-  SUV_PREMIUM
-  SEDAN_EJECUTIVO
-  SPORT_EDITION
+model Auto {
+  id Int @id @default(autoincrement())
+  name String
+  price Float
+  quotations Quotation[]
 }

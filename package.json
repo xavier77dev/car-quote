@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node prisma/seed.js && next dev --turbopack",
+    "dev": "node prisma/seeds/departments-cities.seed.js && node prisma/seeds/autos.seed.js && next dev --turbopack",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
