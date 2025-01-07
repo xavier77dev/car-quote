@@ -1,41 +1,41 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Image from 'next/image'
-import { motion } from 'framer-motion'
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { Input } from "@/components/ui/input"
+import { useState } from "react";
+import Image from "next/image";
+import { motion } from "framer-motion";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export default function CarLanding() {
   const [formData, setFormData] = useState({
-    model: '',
-    name: '',
-    email: 'pedro.vega.damian@gmail.com',
-    phone: '',
-    department: '',
-    city: ''
-  })
+    model: "",
+    name: "",
+    email: "pedro.vega.damian@gmail.com",
+    phone: "",
+    department: "",
+    city: "",
+  });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const response = await fetch('/api/send', {
-      method: 'POST',
+    e.preventDefault();
+    const response = await fetch("/api/send", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
-      body: JSON.stringify(formData)
-    })
+      body: JSON.stringify(formData),
+    });
     console.log(response);
-  }
+  };
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-100 to-gray-300">
@@ -57,7 +57,7 @@ export default function CarLanding() {
               priority
             />
             <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent rounded-lg" />
-            
+
             {/* Floating Features */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -65,11 +65,15 @@ export default function CarLanding() {
               transition={{ delay: 0.4 }}
               className="absolute bottom-4 left-4 right-4 flex justify-around bg-black/60 backdrop-blur-sm rounded-lg p-4"
             >
-              {['360HP', '0-100 4.5s', '250km/h'].map((feature, index) => (
+              {["360HP", "0-100 4.5s", "250km/h"].map((feature, index) => (
                 <div key={index} className="text-center text-white">
                   <div className="font-bold">{feature}</div>
                   <div className="text-xs opacity-75">
-                    {index === 0 ? 'Potencia' : index === 1 ? 'Aceleración' : 'Velocidad Máx'}
+                    {index === 0
+                      ? "Potencia"
+                      : index === 1
+                        ? "Aceleración"
+                        : "Velocidad Máx"}
                   </div>
                 </div>
               ))}
@@ -88,8 +92,14 @@ export default function CarLanding() {
             </h2>
             <form className="space-y-6" onSubmit={handleSubmit}>
               <div className="space-y-2">
-                <Label htmlFor="model" className="text-gray-700">Selecciona un modelo</Label>
-                <Select onValueChange={(value) => setFormData({ ...formData, model: value })}>
+                <Label htmlFor="model" className="text-gray-700">
+                  Selecciona un modelo
+                </Label>
+                <Select
+                  onValueChange={(value) =>
+                    setFormData({ ...formData, model: value })
+                  }
+                >
                   <SelectTrigger className="border-gray-300">
                     <SelectValue placeholder="Elige un modelo" />
                   </SelectTrigger>
@@ -102,24 +112,60 @@ export default function CarLanding() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="name" className="text-gray-700">Nombre completo</Label>
-                <Input onChange={(e) => setFormData({...formData, name: e.target.value})} id="name" placeholder="Tu nombre" className="border-gray-300" />
+                <Label htmlFor="name" className="text-gray-700">
+                  Nombre completo
+                </Label>
+                <Input
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                  id="name"
+                  placeholder="Tu nombre"
+                  className="border-gray-300"
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-gray-700">Email</Label>
-                <Input value={formData.email} onChange={(e) => setFormData({...formData, email: e.target.value})} id="email" type="email" placeholder="tu@email.com" className="border-gray-300" />
+                <Label htmlFor="email" className="text-gray-700">
+                  Email
+                </Label>
+                <Input
+                  value={formData.email}
+                  onChange={(e) =>
+                    setFormData({ ...formData, email: e.target.value })
+                  }
+                  id="email"
+                  type="email"
+                  placeholder="tu@email.com"
+                  className="border-gray-300"
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone" className="text-gray-700">Número celular</Label>
-                <Input onChange={(e) => setFormData({...formData, phone: e.target.value})} id="phone" type="tel" placeholder="Tu número de contacto" className="border-gray-300" />
+                <Label htmlFor="phone" className="text-gray-700">
+                  Número celular
+                </Label>
+                <Input
+                  onChange={(e) =>
+                    setFormData({ ...formData, phone: e.target.value })
+                  }
+                  id="phone"
+                  type="tel"
+                  placeholder="Tu número de contacto"
+                  className="border-gray-300"
+                />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label htmlFor="department" className="text-gray-700">Departamento</Label>
-                  <Select onValueChange={(value) => setFormData({ ...formData, department: value })}>
+                  <Label htmlFor="department" className="text-gray-700">
+                    Departamento
+                  </Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, department: value })
+                    }
+                  >
                     <SelectTrigger className="border-gray-300">
                       <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
@@ -132,8 +178,14 @@ export default function CarLanding() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="city" className="text-gray-700">Ciudad</Label>
-                  <Select onValueChange={(value) => setFormData({ ...formData, city: value })}>
+                  <Label htmlFor="city" className="text-gray-700">
+                    Ciudad
+                  </Label>
+                  <Select
+                    onValueChange={(value) =>
+                      setFormData({ ...formData, city: value })
+                    }
+                  >
                     <SelectTrigger className="border-gray-300">
                       <SelectValue placeholder="Seleccionar" />
                     </SelectTrigger>
@@ -156,7 +208,10 @@ export default function CarLanding() {
                 </label>
               </div>
 
-              <Button className="w-full bg-gray-800 hover:bg-gray-700 text-white" size="lg">
+              <Button
+                className="w-full bg-gray-800 hover:bg-gray-700 text-white"
+                size="lg"
+              >
                 Enviar datos
               </Button>
             </form>
@@ -164,6 +219,5 @@ export default function CarLanding() {
         </div>
       </div>
     </div>
-  )
+  );
 }
-
