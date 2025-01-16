@@ -5,6 +5,7 @@ interface EmailTemplateProps {
   phone: string;
   department: string;
   city: string;
+  price: number;
 }
 
 export const EmailTemplate = ({
@@ -14,6 +15,7 @@ export const EmailTemplate = ({
   phone,
   department,
   city,
+  price,
 }: EmailTemplateProps) => {
   return (
     <>
@@ -25,6 +27,7 @@ export const EmailTemplate = ({
         assumenda sed a deserunt?
       </p>
       <h2>Modelo: {model}</h2>
+      <h2>Precio: {price}</h2>
       <h2>Nombre: {name}</h2>
       <h2>email: {email}</h2>
       <h2>Phone: {phone}</h2>
@@ -33,4 +36,3 @@ export const EmailTemplate = ({
     </>
   );
 };
-

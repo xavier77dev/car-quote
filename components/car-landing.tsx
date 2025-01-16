@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -14,19 +14,38 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Auto, Department, EmailTemplate } from "@/interfaces";
+import SelectDepartment from "./select-department";
+import FindCitiesXDepartment from "./GetCities";
 
 export default function CarLanding() {
-  const [formData, setFormData] = useState({
+  const [autos, setAutos] = useState<Auto[]>([]);
+  const [departments, setDepartments] = useState<Department[]>([]);
+
+  useEffect(() => {
+    const fetchAutos = async () => {
+      const response = await fetch("/api/autos");
+      const data = await response.json();
+      setAutos(data);
+    };
+
+    fetchAutos();
+  }, []);
+  const [formData, setFormData] = useState<EmailTemplate>({
     model: "",
     name: "",
     email: "xavier.basurto.77@gmail.com",
     phone: "",
+    departmentId: "",
     department: "",
-    cityId: "",
+    city: "",
+    acceptsPolicy: false,
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    console.log(formData);
     const response = await fetch("/api/send", {
       method: "POST",
       headers: {
@@ -104,9 +123,11 @@ export default function CarLanding() {
                     <SelectValue placeholder="Elige un modelo" />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value="suv">SUV Premium</SelectItem>
-                    <SelectItem value="sedan">Sedán Ejecutivo</SelectItem>
-                    <SelectItem value="sport">Sport Edition</SelectItem>
+                    {autos.map((auto) => (
+                      <SelectItem key={auto.id} value={auto.name}>
+                        {auto.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
@@ -157,49 +178,30 @@ export default function CarLanding() {
               </div>
 
               <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="department" className="text-gray-700">
-                    Departamento
-                  </Label>
-                  <Select
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, department: value })
-                    }
-                  >
-                    <SelectTrigger className="border-gray-300">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="lima">Lima</SelectItem>
-                      <SelectItem value="arequipa">Arequipa</SelectItem>
-                      <SelectItem value="trujillo">Trujillo</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="city" className="text-gray-700">
-                    Ciudad
-                  </Label>
-                  <Select
-                    onValueChange={(value) =>
-                      setFormData({ ...formData, cityId: value })
-                    }
-                  >
-                    <SelectTrigger className="border-gray-300">
-                      <SelectValue placeholder="Seleccionar" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="city1">Ciudad 1</SelectItem>
-                      <SelectItem value="city2">Ciudad 2</SelectItem>
-                      <SelectItem value="city3">Ciudad 3</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
+                <SelectDepartment
+                  setFormData={setFormData}
+                  formData={formData}
+                  setDepartments={setDepartments}
+                  departments={departments}
+                />
+                <FindCitiesXDepartment
+                  setFormData={setFormData}
+                  formData={formData}
+                  departments={departments}
+                />
               </div>
 
               <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
+                <Checkbox
+                  id="terms"
+                  checked={formData.acceptsPolicy}
+                  onCheckedChange={(checked: boolean) =>
+                    setFormData({
+                      ...formData,
+                      acceptsPolicy: checked,
+                    })
+                  }
+                />
                 <label
                   htmlFor="terms"
                   className="text-sm text-gray-600 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
