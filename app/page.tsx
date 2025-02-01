@@ -1,6 +1,5 @@
-import CarLanding from '../components/car-landing'
+import CarLanding from "../components/CarLanding";
 
 export default function Home() {
-  return <CarLanding />
+  return <CarLanding />;
 }
-

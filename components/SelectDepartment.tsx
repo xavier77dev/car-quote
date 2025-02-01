@@ -1,3 +1,5 @@
+"use client";
+
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 
@@ -6,42 +8,37 @@ import {
   SelectValue,
   SelectContent,
   SelectItem,
-} from "./ui/select";
-import { Department, EmailTemplate } from "@/interfaces";
-import { useEffect, useState } from "react";
+} from "@/components/ui/select";
+import { useSelectDepartment } from "@/hooks/use-select-department";
+import { Department, EmailTemplate, ErrorsState } from "@/interfaces";
 
 interface SelectDepartmentProps {
   setFormData: React.Dispatch<React.SetStateAction<EmailTemplate>>;
-  formData: EmailTemplate;
   setDepartments: React.Dispatch<React.SetStateAction<Department[]>>;
   departments: Department[];
+  setErrors: React.Dispatch<React.SetStateAction<ErrorsState>>;
+  errors: ErrorsState;
 }
 
 const SelectDepartment = ({
   setFormData,
-  formData,
   departments,
   setDepartments,
+  setErrors,
+  errors,
 }: SelectDepartmentProps) => {
-  const getDepartments = async () => {
-    const departments = await fetch("/api/departments");
-    setDepartments(await departments.json());
-  };
-
-  useEffect(() => {
-    getDepartments();
-  }, []);
+  const { handleDepartmentChange } = useSelectDepartment({
+    setFormData,
+    setDepartments,
+    setErrors,
+  });
 
   return (
     <div className="space-y-2">
       <Label htmlFor="department" className="text-gray-700">
-        Departamento
+        Departamento <span className="text-red-600"> *</span>
       </Label>
-      <Select
-        onValueChange={(value: EmailTemplate["department"]) =>
-          setFormData({ ...formData, department: value })
-        }
-      >
+      <Select onValueChange={handleDepartmentChange}>
         <SelectTrigger className="border-gray-300">
           <SelectValue placeholder="Seleccionar" />
         </SelectTrigger>
@@ -53,6 +50,9 @@ const SelectDepartment = ({
           ))}
         </SelectContent>
       </Select>
+      <span className="text-red-600 text-[14px]">
+        {errors.department.status && errors.department.message}
+      </span>
     </div>
   );
 };
